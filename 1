@@ -1,0 +1,57 @@
+import random
+import time
+
+class PublicSpeakingSimulator:
+    def __init__(self):
+        self.exercises = [
+            ("Impromptu Speech", "Speak on a random topic for 2 minutes."),
+            ("Storytelling", "Tell a short story in 3 minutes."),
+            ("Persuasive Pitch", "Convince the audience on a given topic in 4 minutes."),
+            # Add more exercises as needed
+        ]
+
+    def start_simulator(self):
+        print("Welcome to the Public Speaking Simulator!")
+
+        while True:
+            self.display_menu()
+            choice = input("Select an exercise (1-{}), or enter 'q' to quit: ".format(len(self.exercises)))
+
+            if choice.lower() == 'q':
+                print("Thank you for using the Public Speaking Simulator. Goodbye!")
+                break
+
+            try:
+                exercise_idx = int(choice) - 1
+                if 0 <= exercise_idx < len(self.exercises):
+                    exercise = self.exercises[exercise_idx]
+                    self.perform_exercise(exercise)
+                else:
+                    print("Invalid choice. Please enter a number between 1 and {}.".format(len(self.exercises)))
+            except ValueError:
+                print("Invalid input. Please enter a number.")
+
+    def display_menu(self):
+        print("\nExercises:")
+        for i, exercise in enumerate(self.exercises, start=1):
+            print("{}. {}".format(i, exercise[0]))
+
+    def perform_exercise(self, exercise):
+        title, description = exercise
+        print("\nGet ready for '{}'!".format(title))
+        print(description)
+        input("Press Enter when you're ready to start...")
+
+        # Simulate speaking (replace with your actual speaking mechanism)
+        self.simulate_speaking()
+
+        print("\nExercise complete! Great job!")
+
+    def simulate_speaking(self):
+        # Simulate speaking by waiting for a random duration
+        duration = random.randint(120, 300)  # 2 to 5 minutes
+        time.sleep(duration / 60)  # Convert seconds to minutes
+
+if __name__ == "__main__":
+    simulator = PublicSpeakingSimulator()
+    simulator.start_simulator()
