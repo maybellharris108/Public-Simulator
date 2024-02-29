@@ -1,0 +1,86 @@
+import SwiftUI
+
+struct ContentView: View {
+    @State private var isSimulatorActive = false
+    @State private var currentExerciseIndex: Int?
+
+    let exercises = [
+        ("Impromptu Speech", "Speak on a random topic for 2 minutes."),
+        ("Storytelling", "Tell a short story in 3 minutes."),
+        ("Persuasive Pitch", "Convince the audience on a given topic in 4 minutes."),
+        // Add more exercises as needed
+    ]
+
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Public Speaking Simulator")
+                    .font(.title)
+                    .padding()
+
+                if isSimulatorActive {
+                    ExerciseView(exercise: exercises[currentExerciseIndex ?? 0], onExerciseComplete: { self.isSimulatorActive = false })
+                } else {
+                    List(0..<exercises.count) { index in
+                        Button(action: {
+                            self.isSimulatorActive = true
+                            self.currentExerciseIndex = index
+                        }) {
+                            ExerciseRow(exercise: self.exercises[index])
+                        }
+                    }
+                    .navigationBarTitle("Exercises")
+                }
+            }
+        }
+    }
+}
+
+struct ExerciseRow: View {
+    let exercise: (String, String)
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(exercise.0)
+                .font(.headline)
+            Text(exercise.1)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+        }
+        .padding()
+    }
+}
+
+struct ExerciseView: View {
+    let exercise: (String, String)
+    var onExerciseComplete: () -> Void
+
+    var body: some View {
+        VStack {
+            Text("Get ready for '\(exercise.0)'!")
+                .font(.title)
+                .padding()
+
+            Text(exercise.1)
+                .font(.body)
+                .padding()
+
+            Button("Start Exercise") {
+                // Perform actions to start the exercise
+                // You can use a timer or other mechanisms here
+                // For simplicity, we'll just wait for 5 seconds and then end the exercise
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    self.onExerciseComplete()
+                }
+            }
+            .padding()
+        }
+        .navigationBarTitle("Exercise")
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
